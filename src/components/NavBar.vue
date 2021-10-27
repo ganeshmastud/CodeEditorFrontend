@@ -27,7 +27,7 @@
                         <li class="nav-item  cursor-pointer" v-if="isAuthenticated">
                             <span class="nav-link" @click="logout()">Logout</span>
                         </li>
-                        <li class="nav-item ">
+                        <li class="nav-item " v-else>
                             <router-link  class="nav-link px-2" to="/login" >Login</router-link>
                         </li>
                         
