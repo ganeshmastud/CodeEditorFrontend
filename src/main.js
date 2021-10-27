@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
-
+import router from '@/router';
 Vue.use(IconsPlugin)
 import Router from 'vue-router';
 Vue.use( Router );
@@ -24,5 +24,6 @@ Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 
 new Vue({
+  router,
   render: h => h(App),
 }).$mount('#app')
