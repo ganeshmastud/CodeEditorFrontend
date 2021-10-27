@@ -1,9 +1,11 @@
 import Router from 'vue-router';
 
-import CodeEditor from '@/components/code_editor.vue';
+// import CodeEditor from '@/components/code_editor.vue';
 import Home from '@/components/Home';
-import Register from '@/components/signup'; 
-import Login  from '@/components/login';
+// import Register from '@/components/signup'; 
+// import Login  from '@/components/login';
+
+//router lazy loading added
 const router = new Router({
     mode:'history',
     routes:[
@@ -15,18 +17,18 @@ const router = new Router({
         {
             name:'codeEditor',
             path:'/codeeditor',
-            component:CodeEditor
+            component:() => import(/* webpackChunkName: "Code Editor" */ "@/components/code_editor.vue") 
 
         },
         {
             name:'login',
             path:'/login',
-            component:Login
+            component: () => import(/* webpackChunkName: "Login"*/ "@/components/login")
         },
         {
             name:'register',
             path:'/signup',
-            component:Register
+            component:() => import (/*webpackChunkName: "Register"*/ "@/components/signup")
         }
        
 
