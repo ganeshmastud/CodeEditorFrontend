@@ -1,4 +1,5 @@
 import Router from 'vue-router';
+import {store} from '@/stores';
 
 // import CodeEditor from '@/components/code_editor.vue';
 import Home from '@/components/Home';
@@ -35,6 +36,27 @@ const router = new Router({
     ]
 
 
+});
+
+
+
+let flag=true
+router.beforeEach(( to, from, next ) => {
+    console.log(from.name," from page to :",to.name);
+     
+      if( flag === true && to.name !== 'register' && to.name !== 'login'  && !store.getters.isAuthenticated ) {  //checks for the name of the router rather than path to the router *
+        console.log("In APP login");
+        flag = false;
+        return next({ 
+            name: 'login'
+        });
+    } else if( !flag && to.name === 'register' ){
+        flag=true;
+        return next('/signup');
+        
+    }
+
+    next();
 });
 
 export default router;

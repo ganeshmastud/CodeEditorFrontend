@@ -145,6 +145,7 @@
                 }
             },
             signup (){
+                console.log("in Signup");
                 this.username_err='';
                 this.email_err='';
                 this.password_errs=[]
@@ -152,17 +153,17 @@
                 this.flag=true
                 const credentials = { };
                 
+                this.validateForm(this.form.password);
+
                 credentials.name = this.form.name;
-                
                 credentials.email = this.form.email;
                 credentials.password = this.form.password;
-                this.validateForm(this.form.password);
                 // console.log("register data: ",this.form)
                 // https://mymeetingsapp.herokuapp.com/api/auth/register
                 // this.$router.push(  '/'  )
                 if(this.flag){
                      axios.post(
-                        'https://mymeetingsapp.herokuapp.com/api/auth/register',
+                        'http://localhost:3000/auth/register',
                         credentials,
                         {
                             headers: {
@@ -170,7 +171,8 @@
                             }
                         }
                     )
-                    .then(()=>{
+                    .then((res)=>{
+                        console.log(res)
                         alert("Congratulations! you have register successfully.")
                         this.$router.push(  '/login'  )
                     }  )

@@ -7,12 +7,12 @@
                     <router-link class="navbar-brand" to="/">Code Editor</router-link>
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-                    <b-collapse id="nav-collapse" is-nav>
+                    <b-collapse id="nav-collapse" is-nav >
                     <b-navbar-nav class="d-flex justify-content-start col-12 mt-3 mt-lg-0  col-sm-12 col-lg-6">
-                        <li class="nav-item" >
+                        <li class="nav-item" v-if="isAuthenticated">
                             <router-link class="nav-link px-2 " to="/">Home</router-link>
                         </li>
-                        <li class="nav-item " >
+                        <li class="nav-item " v-if="isAuthenticated">
                             <router-link class="nav-link px-2" to="/codeeditor" >Start Coding</router-link>
                         </li>
 
@@ -21,8 +21,11 @@
 
                     <!-- Right aligned nav items -->
                     <b-navbar-nav class=" col-6 justify-content-end col-12 col-sm-12 col-lg-6">
-                        <li class="nav-item " >
-                            <router-link  class="nav-link px-2" to="#">Hello email@exapmle.com</router-link>
+                        <li class="nav-item " v-if="isAuthenticated">
+                            <router-link  class="nav-link px-2" to="#">Hello {{email}}</router-link>
+                        </li>
+                        <li class="nav-item  cursor-pointer" v-if="isAuthenticated">
+                            <span class="nav-link" @click="logout()">Logout</span>
                         </li>
                         <li class="nav-item ">
                             <router-link  class="nav-link px-2" to="/login" >Login</router-link>
@@ -40,7 +43,23 @@
 
 <script>
     export default{
-        name:'NavBar'
+        name:'NavBar',
+        computed: {
+       
+        email() {
+            console.log("this.$store :", this.$store.state.auth);
+            return this.$store.state.auth.email;
+        },
+        isAuthenticated() {
+            return this.$store.getters.isAuthenticated;
+        }
+    },
+    methods: {
+        logout() {
+            this.$store.dispatch( 'logout' )
+                .then( () => this.$router.push( { name: 'login' } ) );
+        }
+    }
     }
 </script>
 

@@ -134,9 +134,6 @@ export default {
 .select select:focus{
   border:2px solid #0d6efd;
 }
-.select select::-moz-selection{
-  border:2px solid #7aa2dd;
-}
 .btn{
   padding: .21em 2em;
 }
