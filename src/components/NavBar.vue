@@ -25,7 +25,7 @@
                             <router-link  class="nav-link px-2" to="#">Hello {{email}}</router-link>
                         </li>
                         <li class="nav-item  cursor-pointer" v-if="isAuthenticated">
-                            <span class="nav-link" @click="logout()">Logout</span>
+                            <span class="nav-link px-2" @click="logout()">Logout</span>
                         </li>
                         <li class="nav-item " v-else>
                             <router-link  class="nav-link px-2" to="/login" >Login</router-link>

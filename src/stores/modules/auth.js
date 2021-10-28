@@ -3,11 +3,12 @@ import { login } from '@/services/auth';
 const KEY_TOKEN = 'token';
 const KEY_EMAIL = 'email';
 // const KEY_ROLE = 'role';
-
+const KEY_USERID = 'userId';
 const auth = {
     state: {
         token: localStorage.getItem( KEY_TOKEN ) || '',
         email: localStorage.getItem( KEY_EMAIL ) || '',
+        userId:localStorage.getItem( KEY_USERID ) || '',
         // role: localStorage.getItem( KEY_ROLE ) || ''
     },
     getters: {
@@ -24,6 +25,9 @@ const auth = {
         },
         setEmail( state, email ) {
             state.email = email;
+        },
+        setUserID(state, userId){
+            state.userId = userId;
         }
         // setRole( state, role ) {
         //     state.role = role;
@@ -34,14 +38,15 @@ const auth = {
             return login( credentials )
                         .then( data => {
                             // in meeting app the token may be in token, not authToken
-                            const { token, email } = data
+                            const { token, email,userId } = data
         
                             localStorage.setItem( KEY_TOKEN, token );
                             localStorage.setItem( KEY_EMAIL, email );
                             // localStorage.setItem( KEY_ROLE, role );
-        
+                            localStorage.setItem( KEY_USERID,userId  );
                             commit( 'setToken', token );
                             commit( 'setEmail', email );
+                            commit('setUserID',userId)
                             // commit( 'setRole', role );
         
                             return email;
@@ -50,10 +55,12 @@ const auth = {
         logout( { commit } ) {
             localStorage.removeItem( KEY_TOKEN );
             localStorage.removeItem( KEY_EMAIL );
+            localStorage.removeItem( KEY_USERID );
             // localStorage.removeItem( KEY_ROLE );
         
             commit( 'setToken', '' );
             commit( 'setEmail', '' );
+            commit('setUserID', '');
             // commit( 'setRole', '' );
 
             return Promise.resolve();

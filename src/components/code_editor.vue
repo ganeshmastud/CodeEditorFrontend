@@ -29,7 +29,12 @@
       </div>
        
        <div class="run-code">
-        <button class="btn btn-primary " type="submit">run</button>
+        <button class="btn btn-primary " type="submit"  :disabled='processing'>
+           <b-spinner small v-if='processing'></b-spinner>
+                        
+          <span class="sr-only" v-if='!processing'>run</span>
+          <span class="sr-only" v-if='processing'>loading</span>
+       </button>
       </div>
 
       </div>
@@ -37,12 +42,12 @@
       <div class="codesection d-flex flex-row flex-wrap flex-sm-wrap flex-md-nowrap
        flex-lg-nowrap justify-content-between">
         <div class="codewrite col-12 col-xs-12   col-sm-12 col-md-6 mb-2" >
-          <editor v-model="codearea" @init="editorInit" :lang="language" :theme="editor_theme" width="100%" height="100%"></editor>
+          <editor v-model="post.codearea" @init="editorInit" :lang="language" :theme="editor_theme" width="100%" height="100%"></editor>
 
         <!-- <textarea name="codearea" v-model="post.codearea"  id="codeinput"    cols="120"  rows="20"  ></textarea> -->
         </div>
         <div class="codeoutput col-xs-12 col-12 col-sm-12 col-md-6 ">
-          
+          <span class="codeOutput" > {{programOutput}}</span>
           
         </div>
 
@@ -56,26 +61,29 @@
 
 <script>
 import axios from "axios";
+import AppConfig from '@/config';
+const { apiBaseUrl } = AppConfig;
 export default {
   name: "CodeCompiler",
   
   data() {
     return {
-      content:'',
-      language:'c_cpp',
+      processing:false,
+      language:'c_cpp',  //language specific syntax highlighting is a value set into vue2-ace-editor
       editor_theme:'',
       post: {
-        userId: "6177628dcfa2f4eaf3326424",
+        userId: this.$store.state.auth.userId,
         select_language: 'c',
-        codearea: null,
+        codearea: '',
       },
-    };
+      programOutput:''
+    }
   },
   computed:{
     
   },
   methods: {
-    changeLang(){
+    changeLang(){ // based on selected language the code is highlighted
       if(this.post.select_language === 'python'){
           this.language = 'python';
       } else if(this.post.select_language === 'java'){
@@ -85,11 +93,20 @@ export default {
       }
 
     },
-    postData() {
+    async postData() { //making post request to store the users code in file storage and url to the file storage in database
+      this.processing=true;
+      console.log(this.post.userId,"type ", typeof this.post.userId)
       console.log("data sending data :", this.post);
-      axios
-        .post(`http://localhost:3000/codes/${this.post.select_language}`, this.post)
-        .then((res) => console.log(res.data));
+      await axios
+        .post(`${apiBaseUrl}/codes/${this.post.select_language}`, this.post)
+        .then((res) => {
+          this.processing =false;
+          console.log(res.data)
+          this.programOutput = res.data;
+        }).catch( (err) => {
+          this.processing =false;
+          console.log("error ",err.message);
+        })
     },
     editorInit: function () {
             require('brace/ext/language_tools') //language extension prerequsite...
@@ -148,6 +165,9 @@ export default {
   height:450px;
   /* width:100%; */
   /* height:100%; */
+}
+.codeOutput{
+  color:white;
 }
 @media only screen and (min-width:760px){
   .codeoutput{

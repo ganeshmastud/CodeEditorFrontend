@@ -3,6 +3,7 @@ import {store} from '@/stores';
 
 // import CodeEditor from '@/components/code_editor.vue';
 import Home from '@/components/Home';
+// import PageNotFound  from '@/components/pageNotFound'
 // import Register from '@/components/signup'; 
 // import Login  from '@/components/login';
 
@@ -31,6 +32,11 @@ const router = new Router({
             path:'/signup',
             component:() => import (/*webpackChunkName: "Register"*/ "@/components/signup")
         }
+        ,{   
+            name:'PageNotFound',
+            path: "*",
+            component: () => import(/*webpackChunkName: "PageNotFound"*/ "@/components/PageNotFound")
+         }
        
 
     ]

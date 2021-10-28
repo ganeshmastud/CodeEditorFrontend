@@ -1,6 +1,17 @@
 <template>
     <div class="container col-11 col-lg-12 my-4">
         <div class="row">
+            <div class="col-11 col-sm-8 col-md-6 col-lg-4 mx-auto alert alert-success " v-if="success">
+                <div class="title d-flex justify-content-between " style="border-bottom:1px solid green ">
+                    <span style="display:inline-block"><strong>{{toast_obj.title}}</strong></span>    
+                    <span class="close" style="display:inline-block" @click="CloseToast()"><strong>X</strong>  </span>
+                    
+                </div>
+                <div class="message">
+                    {{toast_obj.message}}
+                </div>
+            </div>
+        
             <div class="signupform col-11 col-sm-8 col-md-6 col-lg-4 mx-auto">
                 <!-- offset-0 offset-md-3 -->
                 <h1 class="form-title" style="text-align:center">Sign Up</h1>
@@ -60,7 +71,13 @@
                         <div v-if="retype_password_err"><span class="error">{{retype_password_err}}</span></div>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary mt-4 col-12" @click="checkAllFieldPresent()" type="submit">Sign Up</button>
+                        <button class="btn btn-primary mt-4 col-12" 
+                        @click="checkAllFieldPresent()" type="submit"
+                        :disabled='processing'>
+                        <b-spinner small v-if='processing'></b-spinner>
+                        <span class="sr-only" v-if='!processing'>Sign Up</span>
+                        <span class="sr-only" v-if='processing'>loading</span></button> 
+                        
                         <!-- <app-spinner v-if="processing" /> -->
                     </div>
                 </form>
@@ -74,17 +91,23 @@
                 </div>
             </div>
         </div>
+      
+        
+        
+        
     </div>
 </template>
 
 <script>
     import axios from 'axios';
-    // import Vue from 'vue';
-    // import config from '@/config';
+    import AppConfig from '@/config';
+    // import toast_notification from './common_utlis/toast_notification.vue'
+    const { apiBaseUrl } = AppConfig;
     export default {
         name: 'Register',
         data() {
             return {
+                success:false,
                 processing: false,
                 form: {
                     name:'',
@@ -97,18 +120,37 @@
                 password_errs:[],
                 retype_password_err:'',
                 blank_field_err:'',
-                flag:true
+                flag:true,
+                toast_obj:{
+                    variant:"success",
+                    message : "Congratulations! you have register successfully",
+                    title :"Success"
+                }
             };
         },
+        components:{
+            // toastnotification: () => import (/*webpackChunkName: "toast_notification"*/  "./common_utlis/toast_notification.vue")
+        },
         methods: {
+            CloseToast(){
+                this.success=!this.success
+                this.$router.push(  '/login' );
+            },
+            clearForm(){
+                this.form.name='';
+                this.form.email='';
+                this.password ='';
+                this.retype_password='';
+            },
             validateForm(password){
                 
                 let hasNumber = /\d/ //new RegExp('d'); 
                 let uppercase =/[A-Z]+/g //new RegExp('+[A-Z]','g');
                 let lowecase = /[a-z]+/g
                 let specialSymbol = /[!@#$%^&*()?:";{'`~/,.<>}]+/g
-                if(this.form.name.length <=2){
-                    this.username_err="please enter the username atleast 3 characters long";
+                if(this.form.name.length < 9){
+                    this.username_err="please enter the Full name atleast 9 characters long";
+                    this.flag=false;
                 }else{
                     this.username_err="";
                 }
@@ -138,46 +180,72 @@
                 }              
             },
             checkAllFieldPresent(){
+                
                 if(this.form.name ==='' || this.form.email ===''|| this.form.password==='' || this.form.retype_password ===''){
                     this.blank_field_err ="Please fill all the form fields."
                 } else{
                     this.blank_field_err="";
                 }
             },
-            signup (){
-                console.log("in Signup");
+             signup (){
+                // console.log("in Signup");
+                this.processing=true;
                 this.username_err='';
                 this.email_err='';
                 this.password_errs=[]
                 this.retype_password_err='';
-                this.flag=true
+                // this.flag=true
                 const credentials = { };
-                
+                // let promise = new Promise( function(){
                 this.validateForm(this.form.password);
-
-                credentials.name = this.form.name;
-                credentials.email = this.form.email;
-                credentials.password = this.form.password;
+                    
+                // })
+                // promise.then(async function(){
+                    credentials.name = this.form.name;
+                    credentials.email = this.form.email;
+                    credentials.password = this.form.password;
+                    if(this.flag){
+                        
+                         axios.post(
+                            `${apiBaseUrl}/auth/register`,
+                            credentials,
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }
+                        )
+                        .then((res)=>{
+                            this.processing=false;
+                            console.log(res);
+                            this.clearForm();
+                            this.toast_obj.variant="success";
+                            this.toast_obj.title = "Success"
+                            this.toast_obj.message = "Congratulations! you have register successfully."
+                            // this.success=true;
+                            alert("Congratulations! you have register successfully.");
+                            this.flag=false;
+                        }  )
+                        .catch( (error)=>{
+                            this.clearForm();
+                            console.log(error.message);
+                            alert(error.message);
+                            this.flag=true;
+                            this.processing=false;
+                        }  );
+                    } else{
+                        this.processing=false;
+                        this.flag=true;
+                    }
+                // })
+                    
+                   
+               
+                 
                 // console.log("register data: ",this.form)
                 // https://mymeetingsapp.herokuapp.com/api/auth/register
                 // this.$router.push(  '/'  )
-                if(this.flag){
-                     axios.post(
-                        'http://localhost:3000/auth/register',
-                        credentials,
-                        {
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    )
-                    .then((res)=>{
-                        console.log(res)
-                        alert("Congratulations! you have register successfully.")
-                        this.$router.push(  '/login'  )
-                    }  )
-                    .catch( (error)=>console.log(error.message) );
-                }
+                
                
             }
         }
@@ -211,5 +279,15 @@
     }
     .err{
         text-align: center;
+    }
+    .close{
+        padding:3px;
+        margin-top:-3px;
+
+    }
+    .close:hover{
+        
+        background-color:  lightgreen;
+
     }
 </style>
