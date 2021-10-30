@@ -47,7 +47,8 @@
         <!-- <textarea name="codearea" v-model="post.codearea"  id="codeinput"    cols="120"  rows="20"  ></textarea> -->
         </div>
         <div class="codeoutput col-xs-12 col-12 col-sm-12 col-md-6 ">
-          <span class="codeOutput" > {{programOutput}}</span>
+          <pre class="codeOutput" v-if="!program_error"> {{programOutput}}</pre>
+          <p class="codeOutput" v-else>{{programOutput}}</p>
           
         </div>
 
@@ -76,7 +77,8 @@ export default {
         select_language: 'c',
         codearea: '',
       },
-      programOutput:''
+      programOutput:'',
+      program_error:false
     }
   },
   computed:{
@@ -101,14 +103,18 @@ export default {
         .post(`http://localhost:3000/codes/${this.post.select_language}`, this.post)
         .then((res) => {
           this.processing =false;
-          console.log(res.data)
+          this.program_error =false;
+          console.log(typeof res.data, res.data)
           this.programOutput = res.data;
+          
 
         }).catch( (err) => {
           this.processing =false;
-          console.log("error ",err.message);
+          this.program_error = true;
+          console.log("error ",err,err.message);
           // alert(err.message);
           this.programOutput = err.message;
+          
         })
     },
     editorInit: function () {
@@ -118,7 +124,7 @@ export default {
             require('brace/mode/c_cpp')  
             require('brace/mode/java')  
             require('brace/mode/less')
-
+            require('brace/theme/chrome')
             require('brace/theme/tomorrow_night_eighties')
             require('brace/theme/tomorrow_night_blue')
             require('brace/theme/eclipse')
@@ -171,6 +177,7 @@ export default {
 }
 .codeOutput{
   color:white;
+  overflow:hidden;
 }
 @media only screen and (min-width:760px){
   .codeoutput{

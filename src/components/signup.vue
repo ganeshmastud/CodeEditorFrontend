@@ -151,11 +151,17 @@
                 let uppercase =/[A-Z]+/g //new RegExp('+[A-Z]','g');
                 let lowecase = /[a-z]+/g
                 let specialSymbol = /[!@#$%^&*()?:";{'`~/,.<>}]+/g
+                let email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
                 if(this.form.name.length < 9){
                     this.username_err="please enter the Full name atleast 9 characters long";
                     this.flag=false;
                 }else{
                     this.username_err="";
+                }
+                if(email_regex.test(this.form.email)){
+                    this.email_err = "please enter the right email"
+                    this.flag=false
                 }
                 if(password.length <8){
                     this.password_errs.push("Password should be 8 character long")
