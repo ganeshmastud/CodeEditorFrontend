@@ -13,7 +13,7 @@
         </select>
       </div>
        <div class="select">
-        <select class="p-1" name="editor_theme"  v-model="editor_theme" id="editor_theme">
+          <select class="p-1" name="editor_theme"  v-model="editor_theme" id="editor_theme">
           <option  value ="" disabled>Select Theme </option>
           <option value="eclipse">eclipse</option>
           <option value="solarized_dark">solarized_dark</option>
@@ -61,8 +61,8 @@
 
 <script>
 import axios from "axios";
-import AppConfig from '@/config';
-const { apiBaseUrl } = AppConfig;
+// import AppConfig from '@/config';
+// const { apiBaseUrl } = AppConfig;
 export default {
   name: "CodeCompiler",
   
@@ -98,14 +98,17 @@ export default {
       console.log(this.post.userId,"type ", typeof this.post.userId)
       console.log("data sending data :", this.post);
       await axios
-        .post(`${apiBaseUrl}/codes/${this.post.select_language}`, this.post)
+        .post(`http://localhost:3000/codes/${this.post.select_language}`, this.post)
         .then((res) => {
           this.processing =false;
           console.log(res.data)
           this.programOutput = res.data;
+
         }).catch( (err) => {
           this.processing =false;
           console.log("error ",err.message);
+          // alert(err.message);
+          this.programOutput = err.message;
         })
     },
     editorInit: function () {

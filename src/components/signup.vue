@@ -93,7 +93,10 @@
         </div>
       
         
-        
+        <div>
+            <b-button @click="makeToast()">Show Toast</b-button>
+            <b-button @click="makeToast(true)">Show Toast (appended)</b-button>
+        </div>
         
     </div>
 </template>
@@ -225,6 +228,7 @@
                             // this.success=true;
                             alert("Congratulations! you have register successfully.");
                             this.flag=false;
+                            this.$router.push(  '/login' );
                         }  )
                         .catch( (error)=>{
                             this.clearForm();
@@ -247,6 +251,14 @@
                 // this.$router.push(  '/'  )
                 
                
+            },
+            makeToast() {
+                this.toastCount++
+                this.$bvToast.toast(`This is toast number ${this.toastCount}`, {
+                title: 'BootstrapVue Toast',
+                autoHideDelay: 5000000000,
+                noAutoHide: true 
+                })
             }
         }
     }
