@@ -11,9 +11,9 @@ export const login = async( credentials ) => {
                 {
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    } 
                 }
             )
                 .then( successHandler )
                 .catch( errorHandler );
-};
+}; 

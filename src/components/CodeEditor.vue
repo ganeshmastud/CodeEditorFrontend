@@ -2,57 +2,83 @@
   <div class=" col-11 mx-auto p-0 mt-5">
     
     <form action="" @submit.prevent="postData()" method="post">
-      <div class="submenu d-flex flex-row flex-wrap  mb-3">
+      <div class="sub-menu d-flex flex-row flex-wrap  mb-3">
         <div class="select">
-        <select class="p-1"  name="language" @click="changeLang()" v-model="post.select_language" id="language">
-          <option  value ="" disabled>Select language </option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-          <option value="java">Java</option>
-          <option value="python">Python</option>
-        </select>
+          <div class="select-language">
+            <label for="language">Select Language:</label>
+          </div>
+          <div class="select-box">
+             <select class="p-1"  name="language" @click="changeLang()" v-model="post.select_language" id="language">
+              <option  value ="" disabled>Select language </option>
+              <option value="c">C</option>
+              <option value="cpp">C++</option>
+              <option value="java">Java</option>
+              <option value="python">Python</option>
+            </select>
+          </div>
+       
       </div>
        <div class="select">
-          <select class="p-1" name="editor_theme"  v-model="editor_theme" id="editor_theme">
-          <option  value ="" disabled>Select Theme </option>
-          <option value="eclipse">eclipse</option>
-          <option value="solarized_dark">solarized_dark</option>
-          <option value="solarized_light">solarized_light</option>
-          <option value="terminal">terminal</option>
-          <option value="twilight">twilight</option>
-          <option value="textmate">textmate</option>
-          <option value="dracula">dracula</option>
-          <option value="tomorrow_night_eighties">tomorrow_night_eighties</option>
-          <option value="tomorrow_night_blue">tomorrow_night_blue</option>
+          <div class="theme">
+            <label for="editor-theme">Select Theme:</label>
+          </div>
+          <div class="select-themes">
+               <select class="p-1" name="editor_theme"  v-model="editor_theme" id="editor-theme">
+                  <option  value ="" disabled>Select Theme </option>
+                  <option value="eclipse">eclipse</option>
+                  <option value="solarized_dark">solarized_dark</option>
+                  <option value="solarized_light">solarized_light</option>
+                  <option value="terminal">terminal</option>
+                  <option value="twilight">twilight</option>
+                  <option value="textmate">textmate</option>
+                  <option value="dracula">dracula</option>
+                  <option value="tomorrow_night_eighties">tomorrow_night_eighties</option>
+                  <option value="tomorrow_night_blue">tomorrow_night_blue</option>
 
-        </select>
+              </select>
+          </div>
+         
       </div>
        
-       <div class="run-code">
+       <div class="run-code mt-4">
         <button class="btn btn-primary " type="submit"  :disabled='processing'>
            <b-spinner small v-if='processing'></b-spinner>
                         
-          <span class="sr-only" v-if='!processing'>run</span>
-          <span class="sr-only" v-if='processing'>loading</span>
+          <span class="sr-only" v-if='!processing'>Run</span>
+          
        </button>
+       
       </div>
-
+      <span class="sr-only mt-4 p-1 text-primary" v-if='processing'><pre> Executing ...</pre></span>
       </div>
       
-      <div class="codesection d-flex flex-row flex-wrap flex-sm-wrap flex-md-nowrap
+      <div class="code-section d-flex flex-row flex-wrap flex-sm-wrap flex-md-nowrap
        flex-lg-nowrap justify-content-between">
-        <div class="codewrite col-12 col-xs-12   col-sm-12 col-md-6 mb-2" >
+        
+        <div class="code-box col-12 col-xs-12   col-sm-12 col-md-6 mb-2">
+          <div class="code-input-label"> <span>Write code here:</span></div>
+          <div class="code-write" >
+          
           <editor v-model="post.codearea" @init="editorInit" :lang="language" :theme="editor_theme" width="100%" height="100%"></editor>
 
         <!-- <textarea name="codearea" v-model="post.codearea"  id="codeinput"    cols="120"  rows="20"  ></textarea> -->
         </div>
-        <div class="codeoutput col-xs-12 col-12 col-sm-12 col-md-6 ">
-          <pre class="codeOutput" v-if="!program_error"> {{programOutput}}</pre>
-          <p class="codeOutput" v-else>{{programOutput}}</p>
-          
         </div>
+        <div class="code-output-innerbx-box col-xs-12 col-12 col-sm-12 col-md-6">
+            
+            <div class="code-output-innerbx ">
+                <div class="code-output-label"><span> &ThinSpace; Output:</span></div>
+                <div class="code-output-container">
+                    <pre class="code-output" v-if="!program_error">{{programOutput}}</pre>
+                    <div class="code-output" v-if="program_error">{{programOutput}}</div>  
+                </div>  
+                          
+            </div>
+        </div>
+        
 
       </div>
+      
       
       
     </form>
@@ -97,23 +123,31 @@ export default {
     },
     async postData() { //making post request to store the users code in file storage and url to the file storage in database
       this.processing=true;
-      console.log(this.post.userId,"type ", typeof this.post.userId)
+      // console.log(this.post.userId,"type ", typeof this.post.userId)
       console.log("data sending data :", this.post);
       await axios
         .post(`http://localhost:3000/codes/${this.post.select_language}`, this.post)
         .then((res) => {
           this.processing =false;
           this.program_error =false;
-          console.log(typeof res.data, res.data)
-          this.programOutput = res.data;
+          if(res.data.err) {
+            this.programOutput = res.data.msg;
+            this.program_error = true;
+          } else {
+              this.programOutput = res.data;
+              this.program_error = false;
+          }
+          // console.log(typeof res.data, res.data.msg)
+          
           
 
         }).catch( (err) => {
           this.processing =false;
-          this.program_error = true;
-          console.log("error ",err,err.message);
+          
+          console.log("error ",err);
           // alert(err.message);
-          this.programOutput = err.message;
+          alert(err);
+          this.programOutput = err;
           
         })
     },
@@ -161,26 +195,28 @@ export default {
   border:2px solid #0d6efd;
 }
 .btn{
-  padding: .21em 2em;
+  padding: .22em 2em;
+  margin-top:-.1em;
 }
-.codewrite {
+.code-write {
   /* width: 90%; */
   height:450px;
   border:1px solid grey;
 }
-.codeoutput{
+.code-output-container{
   background-color:black;
-  
+  /* margin-left:.5em; */
   height:450px;
   /* width:100%; */
   /* height:100%; */
 }
-.codeOutput{
+.code-output{
   color:white;
-  overflow:hidden;
+  /* overflow:hidden; */
+  /* text-overflow: ellipsis; */
 }
 @media only screen and (min-width:760px){
-  .codeoutput{
+  .code-output-container{
     margin-left: .5em;
     
   }

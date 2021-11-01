@@ -1,5 +1,5 @@
 import { login } from '@/services/auth';
-
+import {setRequestHeader} from '@/services/configureAxios';  
 const KEY_TOKEN = 'token';
 const KEY_EMAIL = 'email';
 // const KEY_ROLE = 'role';
@@ -14,6 +14,9 @@ const auth = {
     getters: {
         isAuthenticated( state ) {
             return !!state.token;
+        },
+        getToken(state){
+            return state.token;
         }
         // isAdmin( state ) {
         //     return state.role === 'admin';
@@ -37,18 +40,20 @@ const auth = {
         login( { commit }, credentials ) {
             return login( credentials )
                         .then( data => {
-                            // in meeting app the token may be in token, not authToken
+                            //
                             const { token, email,userId } = data
         
                             localStorage.setItem( KEY_TOKEN, token );
                             localStorage.setItem( KEY_EMAIL, email );
                             // localStorage.setItem( KEY_ROLE, role );
                             localStorage.setItem( KEY_USERID,userId  );
+                            // console.log("in vuex store auth module login token recieved! ",token);
                             commit( 'setToken', token );
                             commit( 'setEmail', email );
                             commit('setUserID',userId)
+                            setRequestHeader(token);
                             // commit( 'setRole', role );
-        
+                            // Appconfig.apiToken=token;
                             return email;
                         });
         },
@@ -65,7 +70,8 @@ const auth = {
 
             return Promise.resolve();
         }
-    }
+    },
+
 };
 
 export default auth;

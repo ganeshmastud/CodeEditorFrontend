@@ -16,7 +16,7 @@
                 </div>
                 <div class="start-coding-container col-11 mx-auto">
                     <div class="start-coding">
-                        <button class="btn btn-primary float-right">Start Coding</button>
+                        <button @click="startCoding()" class="btn btn-primary float-right">Start Coding</button>
                     </div>
                 </div>
                 
@@ -32,7 +32,22 @@
 
 <script>
 export default {
-    name:'Home'
+    name:'Home',
+    computed:{
+        isAuthenticated() {
+            return this.$store.getters.isAuthenticated;
+        }
+    },
+    methods:{
+        startCoding(){
+            if(this.isAuthenticated){
+                this.$router.push(  '/codeeditor' );
+            }
+            else{
+                this.$router.push(  '/login' );
+            }
+        }
+    }
 }
 </script>
 <style>

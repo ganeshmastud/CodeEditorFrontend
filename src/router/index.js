@@ -12,28 +12,28 @@ const router = new Router({
     mode:'history',
     routes:[
          {
-            name:'Home',
+            name:'home',
             path:'/',
             component:Home
         },
         {
-            name:'codeEditor',
+            name:'codeEditor',   //followed camel case convention
             path:'/codeeditor',
-            component:() => import(/* webpackChunkName: "Code Editor" */ "@/components/code_editor.vue") 
+            component:() => import(/* webpackChunkName: "Code Editor" */ "@/components/CodeEditor.vue") 
 
         },
         {
             name:'login',
             path:'/login',
-            component: () => import(/* webpackChunkName: "Login"*/ "@/components/login")
+            component: () => import(/* webpackChunkName: "Login"*/ "@/components/Login")
         },
         {
             name:'register',
             path:'/signup',
-            component:() => import (/*webpackChunkName: "Register"*/ "@/components/signup")
+            component:() => import (/*webpackChunkName: "Register"*/ "@/components/SignUp")
         }
         ,{   
-            name:'PageNotFound',
+            name:'pageNotFound',
             path: "*",
             component: () => import(/*webpackChunkName: "PageNotFound"*/ "@/components/PageNotFound")
          }
@@ -48,10 +48,10 @@ const router = new Router({
 
 let flag=true
 router.beforeEach(( to, from, next ) => {
-    console.log(from.name," from page to :",to.name);
+    // console.log(from.name," from page to :",to.name);
      
       if( flag === true && to.name !== 'register' && to.name !== 'login'  && !store.getters.isAuthenticated ) {  //checks for the name of the router rather than path to the router *
-        console.log("In APP login");
+        // console.log("In APP login");
         flag = false;
         return next({ 
             name: 'login'

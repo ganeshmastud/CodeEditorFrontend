@@ -12,7 +12,7 @@
                 </div>
             </div>
         
-            <div class="signupform col-11 col-sm-8 col-md-6 col-lg-4 mx-auto">
+            <div class="signup-form col-11 col-sm-8 col-md-6 col-lg-4 mx-auto">
                 <!-- offset-0 offset-md-3 -->
                 <h1 class="form-title" style="text-align:center">Sign Up</h1>
                 <!-- <hr /> -->
@@ -24,7 +24,7 @@
                             class="form-control"
                             name="username"
                             id="username"
-                            placeholder="john doe"
+                            placeholder="Ganesh Mastud"
                             v-model="form.name"
                             required
                         />
@@ -37,11 +37,11 @@
                             class="form-control"
                             name="email"
                             id="email"
-                            placeholder="john.doe@example.com"
+                            placeholder="ganesh.mastud@gmail.com"
                             v-model="form.email"
                             required
                         />
-                        <div v-if="email_err">{{email_err}}</div>
+                        <div v-if="email_err"><span class="error">{{email_err}}</span></div>
                     </div>
                     <div class="form-group pb-2">
                         <label for="password">Password</label>
@@ -76,7 +76,7 @@
                         :disabled='processing'>
                         <b-spinner small v-if='processing'></b-spinner>
                         <span class="sr-only" v-if='!processing'>Sign Up</span>
-                        <span class="sr-only" v-if='processing'>loading</span></button> 
+                        <span class="sr-only" v-if='processing'>&ThickSpace;loading</span></button> 
                         
                         <!-- <app-spinner v-if="processing" /> -->
                     </div>
@@ -90,12 +90,6 @@
                     <div v-if="blank_field_err"><span class="error err">{{blank_field_err}}</span></div>
                 </div>
             </div>
-        </div>
-      
-        
-        <div>
-            <b-button @click="makeToast()">Show Toast</b-button>
-            <b-button @click="makeToast(true)">Show Toast (appended)</b-button>
         </div>
         
     </div>
@@ -159,7 +153,7 @@
                 }else{
                     this.username_err="";
                 }
-                if(email_regex.test(this.form.email)){
+                if(!email_regex.test(this.form.email)){
                     this.email_err = "please enter the right email"
                     this.flag=false
                 }
@@ -258,20 +252,13 @@
                 
                
             },
-            makeToast() {
-                this.toastCount++
-                this.$bvToast.toast(`This is toast number ${this.toastCount}`, {
-                title: 'BootstrapVue Toast',
-                autoHideDelay: 5000000000,
-                noAutoHide: true 
-                })
-            }
+            
         }
     }
 </script>
 
 <style scoped>
-    .signupform{
+    .signup-form{
         border:2px solid #0d6efd;
         border-radius: .5em;
         padding-bottom:1em;

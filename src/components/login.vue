@@ -1,7 +1,7 @@
 <template>
     <div class="container my-4">
         <div class="row">
-            <div class="LoginForm col-11 col-sm-8 col-md-6 col-lg-4 mx-auto"> 
+            <div class="login-form col-11 col-sm-8 col-md-6 col-lg-4 mx-auto"> 
                 <!-- offset-0 offset-md-3 -->
                 <h1 class="form-title" style="text-align:center">Login</h1>
                
@@ -13,7 +13,7 @@
                             class="form-control"
                             name="email"
                             id="email"
-                            placeholder="john.doe@example.com"
+                            placeholder="ganesh.mastud@gmail.com"
                             v-model="form.email"
                         />
                     </div>
@@ -35,7 +35,7 @@
                         <b-spinner small v-if='processing'></b-spinner>
                         
                         <span class="sr-only" v-if='!processing'>Login</span>
-                        <span class="sr-only" v-if='processing'>loading</span>
+                        <span class="sr-only" v-if='processing'>&ThickSpace;loading</span>
                         </button>
                         <!-- <app-spinner v-if="processing" /> -->
                     </div>
@@ -77,9 +77,6 @@
                     .then( () =>{
                         this.processing=false;
                         alert("Login Successfully");
-                        // setTimeout(()=>{
-                        //     this.error="Login Successfully";
-                        // },1000)
                         this.error=''
                         this.form.email ='';    
                         this.form.password= '';
@@ -104,7 +101,7 @@
 </script>
 
 <style scoped>
-    .LoginForm{
+    .login-form{
         border:2px solid #0d6efd;
         border-radius: .5em;
         padding-bottom:1em;

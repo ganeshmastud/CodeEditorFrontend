@@ -47,7 +47,7 @@
         computed: {
        
         email() {
-            console.log("this.$store :", this.$store.state.auth);
+            // console.log("this.$store :", this.$store.state.auth);
             return this.$store.state.auth.email;
         },
         isAuthenticated() {
@@ -70,7 +70,7 @@
    
 }
 .nav-item:hover{
-     background-color: #0b54c2;
+     background-color: #408dfa;
 }
 .nav-item a.router-link-exact-active{
     background-color: #0b54c2; 

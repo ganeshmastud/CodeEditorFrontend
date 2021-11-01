@@ -20,8 +20,6 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 
-
-import '@/services/configureAxios';  
 // Optionally install the BootstrapVue icon components plugin
 
 import router from '@/router';
@@ -32,7 +30,7 @@ import {store} from '@/stores';
 
 
 
-
+import '@/services/configureAxios';  
 Vue.config.productionTip = false
 
 new Vue({
