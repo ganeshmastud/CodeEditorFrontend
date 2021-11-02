@@ -18,7 +18,7 @@ export function setRequestHeader(apiToken){
             // if( request.url.includes( 'meetings' ) || request.url.includes( 'sessions' ) ) {
                 // 'Bearer <token>' is just the requirement for workshops app
                 // In meetings app only token is sent (no 'Bearer ' prefix should be passed)
-                if( request.url.includes( 'codes' )){
+                if( request.url.includes( 'codes' ) || request.url.includes( 'user' )){
                     request.headers['Authorization'] = apiToken
                 }
             // }

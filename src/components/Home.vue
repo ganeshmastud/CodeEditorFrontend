@@ -1,5 +1,6 @@
 <template>
     <div class="col-12 col-lg-11 mx-auto">
+        
         <div class="website-intro d-flex flex-wrap flex-sm-wrap flex-lg-nowrap">
             <div class="content mt-4 mx-auto">
                 <div class="heading col-12 col-sm-12 col-md-10 mt-4 col-lg-10 mt-lg-5 d-flex">
@@ -16,14 +17,20 @@
                 </div>
                 <div class="start-coding-container col-11 mx-auto">
                     <div class="start-coding">
-                        <button @click="startCoding()" class="btn btn-primary float-right">Start Coding</button>
+                        <button @click="startCoding()" class="btn btn-primary float-right"
+                        title="take you in the code editor">Start Coding</button>
                     </div>
+                     
                 </div>
+               
+               
                 
             </div>
             
             <div class="image-illustrator col-12 col-sm-12 col-md-10 col-lg-8 mx-auto">
-                <img class="coding-image" src="/assets/coding.jpg" alt="person coding in image">
+                 <img class="coding-image" src="/assets/coding.jpg" alt="person coding in image">
+                 <!-- <b-skeleton-img>
+                 </b-skeleton-img> -->
             </div>
         </div>
         

@@ -1,5 +1,5 @@
 <template>
-  <div class=" col-11 mx-auto p-0 mt-5">
+  <div class=" col-11 mx-auto p-0 mt-5 position-relative">
     
     <form action="" @submit.prevent="postData()" method="post">
       <div class="sub-menu d-flex flex-row flex-wrap  mb-3">
@@ -8,7 +8,8 @@
             <label for="language">Select Language:</label>
           </div>
           <div class="select-box">
-             <select class="p-1"  name="language" @click="changeLang()" v-model="post.select_language" id="language">
+             <select class="p-1"  name="language" title="select language you prefer to write code."
+             @click="changeLang()" v-model="post.select_language" id="language">
               <option  value ="" disabled>Select language </option>
               <option value="c">C</option>
               <option value="cpp">C++</option>
@@ -23,7 +24,8 @@
             <label for="editor-theme">Select Theme:</label>
           </div>
           <div class="select-themes">
-               <select class="p-1" name="editor_theme"  v-model="editor_theme" id="editor-theme">
+               <select class="p-1" name="editor_theme" title="Select theme for code editor"  
+               @click="changeTheme()" v-model="editor_theme" id="editor-theme">
                   <option  value ="" disabled>Select Theme </option>
                   <option value="eclipse">eclipse</option>
                   <option value="solarized_dark">solarized_dark</option>
@@ -41,7 +43,7 @@
       </div>
        
        <div class="run-code mt-4">
-        <button class="btn btn-primary " type="submit"  :disabled='processing'>
+        <button class="btn btn-primary " title="runs the code" type="submit"  :disabled='processing'>
            <b-spinner small v-if='processing'></b-spinner>
                         
           <span class="sr-only" v-if='!processing'>Run</span>
@@ -68,7 +70,7 @@
             
             <div class="code-output-innerbx ">
                 <div class="code-output-label"><span> &ThinSpace; Output:</span></div>
-                <div class="code-output-container">
+                <div class="code-output-container" title="Contains ouput after execuing code.">
                     <pre class="code-output" v-if="!program_error">{{programOutput}}</pre>
                     <div class="code-output" v-if="program_error">{{programOutput}}</div>  
                 </div>  
@@ -80,8 +82,50 @@
       </div>
       
       
-      
     </form>
+    <div class="fetch-code position-absolute col-8" v-if="load_code">
+      
+        <b-card border-variant="primary"  class="col-12 mt-4"
+        header="Do you like to continue where you leftOff"
+        header-bg-variant="primary"  header-text-variant="white">
+        <b-card-text>
+          <b-row>
+             <b-col>
+                <div class="mb-4 mt-4"> By clicking on <b>Last run code</b> last run code will be provided.</div>
+                    <b-button href="#"  variant="primary">Last run code</b-button>
+                </b-col>
+              <b-col v-if="true">
+                  <div class="mb-4 mt-4">By clicking on <b>saved code</b> last saved code will be provided.</div>
+                  <b-button href="#"  variant="primary">saved code</b-button>
+              </b-col>
+
+          </b-row>
+         
+         
+        </b-card-text>
+        
+       
+      </b-card>
+    </div>
+    
+    <div class="change-lang position-absolute col-8" v-if="change_lang">
+          
+        <b-card border-variant="primary"  class="col-12 mt-4"
+        header="Do you really want to change language"
+        header-bg-variant="primary"  header-text-variant="white">
+        <b-row>
+          <b-col>
+            <b-card-text>
+              Your code will be saved.
+            </b-card-text>
+            <b-button href="#" variant="primary">yes</b-button>
+            <b-button href="#" class="m-2" variant="primary">No</b-button>
+          </b-col>
+        </b-row>
+        </b-card>
+        
+    </div>
+    
   </div>
   
 </template>
@@ -104,14 +148,35 @@ export default {
         codearea: '',
       },
       programOutput:'',
-      program_error:false
+      program_error:false,
+      change_lang:false,
+      load_code:false,
+      load_code_from_store:false,
+      load_code_from_codeFiles: false,
+      prev_selected_lang:''
     }
   },
   computed:{
-    
+    getCodeFiles(){
+      return this.$store.getters.getCodeFiles;
+    },
+    getCode(){
+      return this.$store.getters.getCode;
+    }
   },
   methods: {
+    changeTheme(){
+      const userId =this.post.userId;
+      const theme = this.editor_theme
+      const themeDetails = {userId, theme};
+
+      this.$store.dispatch('updateTheme', themeDetails)
+    },
     changeLang(){ // based on selected language the code is highlighted
+      // this.change_lang=true;
+
+      this.fetchCodeFiles()
+
       if(this.post.select_language === 'python'){
           this.language = 'python';
       } else if(this.post.select_language === 'java'){
@@ -120,11 +185,26 @@ export default {
         this.language = 'c_cpp';
       }
 
+    }, 
+    fetchCodeFiles(){
+      this.$store.dispatch('fetchCodeFiles',this.$store.state.auth.userId);
+      if(this.getCodeFiles.length <=0 && this.getCode.length <=0) {
+        this.load_code = false;
+      } 
+      if(this.getCodeFiles.length > 0) {
+        this.load_code_from_codeFiles = true;
+        this.load_code = true;
+      }
+      if(this.getCode.length > 0) {
+        this.load_code_from_store =true;
+        this.load_code =true;
+      }
+
     },
     async postData() { //making post request to store the users code in file storage and url to the file storage in database
       this.processing=true;
       // console.log(this.post.userId,"type ", typeof this.post.userId)
-      console.log("data sending data :", this.post);
+      // console.log("data sending data :", this.post);
       await axios
         .post(`http://localhost:3000/codes/${this.post.select_language}`, this.post)
         .then((res) => {
@@ -176,6 +256,14 @@ export default {
   components: {
         editor: require('vue2-ace-editor'),
   },
+  mounted() {
+     this.fetchCodeFiles()
+
+    // console.log("getCodeFiles().length ",this.getCodeFiles.length);
+    
+
+    
+  },
   
 };
 </script>
@@ -193,6 +281,8 @@ export default {
 }
 .select select:focus{
   border:2px solid #0d6efd;
+  outline:3px solid #7aa2dd;
+  border-radius: 2px;
 }
 .btn{
   padding: .22em 2em;
@@ -214,6 +304,11 @@ export default {
   color:white;
   /* overflow:hidden; */
   /* text-overflow: ellipsis; */
+}
+.fetch-code, .change-lang{
+  top:25%;
+  left:15%;
+  z-index:2;
 }
 @media only screen and (min-width:760px){
   .code-output-container{

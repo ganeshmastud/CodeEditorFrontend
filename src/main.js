@@ -19,7 +19,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-
 // Optionally install the BootstrapVue icon components plugin
 
 import router from '@/router';

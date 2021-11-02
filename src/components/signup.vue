@@ -97,9 +97,9 @@
 
 <script>
     import axios from 'axios';
-    import AppConfig from '@/config';
+    // import AppConfig from '@/config';
     // import toast_notification from './common_utlis/toast_notification.vue'
-    const { apiBaseUrl } = AppConfig;
+    // const { apiBaseUrl } = AppConfig;
     export default {
         name: 'Register',
         data() {
@@ -210,7 +210,7 @@
                     if(this.flag){
                         
                          axios.post(
-                            `${apiBaseUrl}/auth/register`,
+                            `http://localhost:3000/auth/register`,
                             credentials,
                             {
                                 headers: {
