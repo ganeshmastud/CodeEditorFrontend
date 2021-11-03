@@ -90,13 +90,13 @@
         header-bg-variant="primary"  header-text-variant="white">
         <b-card-text>
           <b-row>
-             <b-col>
+             <b-col v-if="load_code_from_codeFiles">
                 <div class="mb-4 mt-4"> By clicking on <b>Last run code</b> last run code will be provided.</div>
-                    <b-button href="#"  variant="primary">Last run code</b-button>
+                    <b-button @click="loadCodeFromCodeFiles()"  variant="primary">Last run code</b-button>
                 </b-col>
-              <b-col v-if="true">
+              <b-col v-if="load_code_from_store">
                   <div class="mb-4 mt-4">By clicking on <b>saved code</b> last saved code will be provided.</div>
-                  <b-button href="#"  variant="primary">saved code</b-button>
+                  <b-button   variant="primary">saved code</b-button>
               </b-col>
 
           </b-row>
@@ -153,7 +153,8 @@ export default {
       load_code:false,
       load_code_from_store:false,
       load_code_from_codeFiles: false,
-      prev_selected_lang:''
+      prev_selected_lang:'',
+      codeFilePath:''
     }
   },
   computed:{
@@ -162,7 +163,14 @@ export default {
     },
     getCode(){
       return this.$store.getters.getCode;
+    },
+    getTheme(){
+      return this.$store.getters.getTheme;
+    },
+    getLanguage(){
+      return this.$store.getters.getLanguage
     }
+
   },
   methods: {
     
@@ -173,14 +181,22 @@ export default {
 
       this.$store.dispatch('updateTheme', themeDetails)
     },
-    changeLang(){ // based on selected language the code is highlighted
+    async changeLang(){ // based on selected language the code is highlighted
       // this.change_lang=true;
 
       this.fetchCodeFiles()
       const userId =this.post.userId;
       const language = this.post.select_language;
-      const languageDetails = {userId, language}
-      this.$store.dispatch('updateLanguage', languageDetails)
+      const languageDetails = {userId, language};
+      this.prev_selected_lang = this.getLanguage;
+      const prev_written_code = this.post.codearea;
+      const addCodeObj = {};
+      addCodeObj.prev_selected_lang = this.prev_selected_lang;
+      addCodeObj.prev_written_code = prev_written_code;
+      await this.$store.dispatch('addCode',addCodeObj)
+
+
+      await this.$store.dispatch('updateLanguage', languageDetails)
       if(this.post.select_language === 'python'){
           this.language = 'python';
       } else if(this.post.select_language === 'java'){
@@ -188,21 +204,58 @@ export default {
       } else if(this.post.select_language === 'c_cpp'){
         this.language = 'c_cpp';
       }
-
+       console.log("change lang in changeLangfile")
+      this.intializeLangAndTheme()
     }, 
-    fetchCodeFiles(){
-      this.$store.dispatch('fetchCodeFiles',this.$store.state.auth.userId);
-      if(this.getCodeFiles.length <=0 && this.getCode.length <=0) {
+    intializeLangAndTheme(){
+      console.log("in intializeLangAndTheme",this.post.select_language,"this.getLanguage", this.getLanguage)
+      this.editor_theme = this.getTheme;
+      this.post.select_language = this.getLanguage;
+    },
+    async fetchCodeFiles(){
+      await this.$store.dispatch('fetchCodeFiles',this.$store.state.auth.userId);
+      if(!this.checkCodeFilePath() && !this.getCode[this.post.select_language]) {
         this.load_code = false;
       } 
-      if(this.getCodeFiles.length > 0) {
+      if(this.checkCodeFilePath()) {
         this.load_code_from_codeFiles = true;
         this.load_code = true;
+      } else {
+        this.load_code_from_codeFiles = false;
       }
-      if(this.getCode.length > 0) {
+      if(this.getCode[this.post.select_language]) {
         this.load_code_from_store =true;
         this.load_code =true;
+      } else {
+        this.load_code_from_store =false;
       }
+      // console.log(this.getCode.length); now get code is obj not array
+      // console.log("change lang in fetchCodeFiles")
+      
+    },
+    checkCodeFilePath(){
+      let flag =false;
+      this.getCodeFiles.forEach(codefile =>{
+        // console.log("codefile.language ",codefile.language);
+        if(codefile.language === this.post.select_language){
+            console.log("codefile.language ",codefile.language);
+            flag = true;
+            this.codeFilePath = codefile.filepath;
+        } 
+      })
+      if(!flag){
+        this.codeFilePath = '';
+      }
+      return flag;
+    },
+    loadCodeFromCodeFiles(){
+      // const codeFilePath = ''
+      console.log("in loadCodeFromCodeFiles",this.codeFilePath);
+      const codeFilePath = this.codeFilePath
+      axios.post('http://localhost:3000/loadcode/',codeFilePath)
+      .then(res =>{
+        console.log(res)
+      })
 
     },
     async postData() { //making post request to store the users code in file storage and url to the file storage in database
@@ -260,8 +313,9 @@ export default {
   components: {
         editor: require('vue2-ace-editor'),
   },
-  mounted() {
-     this.fetchCodeFiles()
+ async created() {
+     await this.fetchCodeFiles()
+     this.intializeLangAndTheme();
 
     // console.log("getCodeFiles().length ",this.getCodeFiles.length);
     

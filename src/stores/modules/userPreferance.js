@@ -1,9 +1,12 @@
 import axios from "axios";
 const userPreferance = {
     state: {
-        code: [
-
-        ],
+        code: {
+            'c':'',
+            'cpp':'',
+            'java':'',
+            'python':''
+        },
         codeFiles: [
 
         ],
@@ -32,8 +35,17 @@ const userPreferance = {
         setTheme(state, theme){
             state.theme = theme;
         },
-        addCode(state, code){
-            state.code.push(code);
+       async addCode(state, codeData){
+            // console.log(code);
+            
+            Object.keys(state.code).forEach(key => {
+                if(key === codeData.prev_selected_lang){
+                   
+                    state.code[key] = codeData.prev_written_code;
+                    return;
+                }
+            });
+            
         },
         updateCodeFile(state, codeFiles){
             state.codeFiles = codeFiles
@@ -41,10 +53,14 @@ const userPreferance = {
 
     },
     actions: {
+        addCode({commit},prev_code){
+            // console.log("in addcode ",prev_code);
+            commit('addCode', prev_code)
+        },
          async fetchCodeFiles({commit},userId){
              await axios.get(`http://localhost:3000/user/${userId}`)
               .then(res => {
-                  console.log(res.data.codeFiles);
+                //   console.log(res.data.codeFiles);
                   commit('updateCodeFile', res.data.codeFiles);
                   if(res.data.language){
                       commit('setLanguage',res.data.language);
