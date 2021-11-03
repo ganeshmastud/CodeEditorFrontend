@@ -165,6 +165,7 @@ export default {
     }
   },
   methods: {
+    
     changeTheme(){
       const userId =this.post.userId;
       const theme = this.editor_theme
@@ -176,7 +177,10 @@ export default {
       // this.change_lang=true;
 
       this.fetchCodeFiles()
-
+      const userId =this.post.userId;
+      const language = this.post.select_language;
+      const languageDetails = {userId, language}
+      this.$store.dispatch('updateLanguage', languageDetails)
       if(this.post.select_language === 'python'){
           this.language = 'python';
       } else if(this.post.select_language === 'java'){

@@ -54,9 +54,27 @@ const userPreferance = {
                   }
               })
               .catch(err=>{
-                  console.log("err in fetch",err);
+                  console.log("err in fetch theme",err);
               })
           },   
+        async updateLanguage({commit}, languageDetails){
+            // console.log("request in updatetheme");
+            const {userId,language} = languageDetails;
+            await axios.patch(`http://localhost:3000/user/${userId}/language`,
+            {},
+            {
+                params: {
+                    language
+                }
+            })
+            .then(res =>{
+                console.log(res.data);
+                commit('setLanguage',res.data.language)
+            })
+            .catch(err=>{
+                console.log("err in fetch language",err);
+            })
+        },
         async updateTheme({commit}, themeDetails){
             // console.log("request in updatetheme");
             const {userId,theme} = themeDetails
@@ -68,7 +86,7 @@ const userPreferance = {
                 }
             })
             .then(res =>{
-                console.log(res);
+                console.log(res.data);
                 commit('setTheme',res.data.theme)
             })
             .catch(err=>{
