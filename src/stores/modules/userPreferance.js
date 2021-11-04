@@ -35,7 +35,7 @@ const userPreferance = {
         setTheme(state, theme){
             state.theme = theme;
         },
-       async addCode(state, codeData){
+        addCode(state, codeData){
             // console.log(code);
             
             Object.keys(state.code).forEach(key => {
@@ -53,9 +53,10 @@ const userPreferance = {
 
     },
     actions: {
-        addCode({commit},prev_code){
+        async addCode({commit},prev_code){
             // console.log("in addcode ",prev_code);
-            commit('addCode', prev_code)
+            await commit('addCode', prev_code)
+            // return true;
         },
          async fetchCodeFiles({commit},userId){
              await axios.get(`http://localhost:3000/user/${userId}`)
@@ -84,7 +85,7 @@ const userPreferance = {
                 }
             })
             .then(res =>{
-                console.log(res.data);
+                // console.log(res.data);
                 commit('setLanguage',res.data.language)
             })
             .catch(err=>{
