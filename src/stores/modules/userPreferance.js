@@ -71,7 +71,8 @@ const userPreferance = {
                   }
               })
               .catch(err=>{
-                  console.log("err in fetch theme",err);
+                //   console.log("err in fetch theme",err);
+                 next(err);
               })
           },   
         async updateLanguage({commit}, languageDetails){
@@ -89,7 +90,8 @@ const userPreferance = {
                 commit('setLanguage',res.data.language)
             })
             .catch(err=>{
-                console.log("err in fetch language",err);
+                // console.log("err in fetch language",err);
+                 next(err);
             })
         },
         async updateTheme({commit}, themeDetails){
@@ -103,11 +105,12 @@ const userPreferance = {
                 }
             })
             .then(res =>{
-                console.log(res.data);
+                // console.log(res.data);
                 commit('setTheme',res.data.theme)
             })
             .catch(err=>{
-                console.log("err in fetch",err);
+                // console.log("err in fetch",err);
+                next(err);
             })
         }    
 

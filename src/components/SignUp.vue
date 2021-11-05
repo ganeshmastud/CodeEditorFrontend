@@ -221,7 +221,7 @@
                         )
                         .then((res)=>{
                             this.processing=false;
-                            console.log(res);
+                            // console.log(res);
                             this.clearForm();
                             this.toast_obj.variant="success";
                             this.toast_obj.title = "Success"
@@ -233,7 +233,7 @@
                         }  )
                         .catch( (error)=>{
                             this.clearForm();
-                            console.log(error.message);
+                            // console.log(error.message);
                             alert(error.message);
                             this.flag=true;
                             this.processing=false;

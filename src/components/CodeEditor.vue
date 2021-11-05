@@ -317,7 +317,7 @@ export default {
       //  console.log("in loadCodeFromCodeFiles",typeof codeFilePath);
       await axios.post('/loadcode/',codeFilePath)
       .then(res =>{
-        console.log(res.data)
+        // console.log(res.data)
         this.post.codearea = res.data
       })
       this.load_code = false;
@@ -328,7 +328,7 @@ export default {
       // this.post.codearea ='';
       
       this.post.codarea = await this.getCode[this.post.select_language];
-      console.log("lastunsaved code:",this.post.codarea)
+      // console.log("lastunsaved code:",this.post.codarea)
       this.load_code = false;
       this.load_code_from_store =false;
       
@@ -356,7 +356,7 @@ export default {
         }).catch( (err) => {
           this.processing =false;
           
-          console.log("error ",err);
+          // console.log("error ",err);
           // alert(err.message);
           alert(err);
           this.programOutput = err;
