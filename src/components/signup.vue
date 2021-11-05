@@ -83,7 +83,7 @@
                 </form>
                 <div class="text-muted">
                     <div>
-                    </div>
+                    </div> 
                     <div class="signin-acc">
                         <small>Already have an account? <router-link to="/login">SignIn</router-link></small>
                     </div>
@@ -295,4 +295,5 @@
         background-color:  lightgreen;
 
     }
+    /*  */
 </style>

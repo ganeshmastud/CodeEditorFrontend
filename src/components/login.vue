@@ -15,7 +15,7 @@
                             id="email"
                             placeholder="ganesh.mastud@gmail.com"
                             v-model="form.email"
-                        />
+                        /> 
                     </div>
                     <div class="form-group pb-2">
                         <label for="password">Password</label>
@@ -124,4 +124,5 @@
     label{
         color:black
     }
+    /*  */
 </style>
