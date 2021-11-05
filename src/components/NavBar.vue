@@ -21,10 +21,10 @@
 
                     <!-- Right aligned nav items -->
                     <b-navbar-nav class=" col-6 justify-content-end col-12 col-sm-12 col-lg-6">
-                        <li class="nav-item " v-if="isAuthenticated">
+                        <li class="nav-item user-profile " v-if="isAuthenticated">
                             <router-link  class="nav-link px-2" to="#">Hello {{email}}</router-link>
                         </li>
-                        <li class="nav-item  cursor-pointer" v-if="isAuthenticated">
+                        <li class="nav-item  " v-if="isAuthenticated">
                             <span class="nav-link px-2" @click="logout()">Logout</span>
                         </li>
                         <li class="nav-item " v-else>
@@ -65,9 +65,10 @@
 
 <style scoped>
 .nav-item{
-    cursor: pointer;
-    
-   
+    cursor: pointer;  
+}
+.user-profile{
+    cursor:none
 }
 .nav-item:hover{
      background-color: #408dfa;

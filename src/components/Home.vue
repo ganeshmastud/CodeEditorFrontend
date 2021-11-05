@@ -10,9 +10,14 @@
                 <div class="features rounded col-11 col-sm-11 mt-4 px-2 px-md-3 pb-4 mb-4 mx-auto">
                     <h4 class="h4 feature-list-heading pt-4">Features of the website</h4>
                     <ul class="feature-list">
-                        <li class="feature"> user can write code in provided language.</li>
-                        <li class="feature"> For each language only one file can be stored and its path in storage is stored into user document in DB.</li>
-                        <li class="feature"> Code is stored so whenever user get access to website the code gets fetch.</li>
+                        <li class="feature"> Users can write code in available languages.</li>
+                        <li class="feature"> After the user login, his last worked language and 
+                            theme are made available to him.</li>
+                        <li class="feature"> For each language, only one file can be stored and its 
+                            path is stored into the Users document in DB.</li>
+                        <li class="feature"> When the user changes language without executing the code. His written code is stored into vuex store.</li>
+                        <li class="feature"> After the user changes language. The popup form opens with the option to fetch the last executed code.</li>
+                        <li class="feature">Code Download option is available.</li>
                      </ul>
                 </div>
                 <div class="start-coding-container col-11 mx-auto">

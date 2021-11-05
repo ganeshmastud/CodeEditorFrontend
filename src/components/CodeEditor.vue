@@ -1,7 +1,9 @@
 <template>
-  <div class="col-11 mx-auto p-0 mt-5 position-relative" :style="[true?disablecntr:'']">
-      <div class=" col-11 mx-auto p-0 mt-5 ">
-    
+  <div class="col-12 mx-auto p-0  position-relative"  :style="[load_code?disablecntr:'',load_code?body:'']"> 
+    <!-- :style="[load_code?disablecntr:'']" -->
+                
+      <div class=" col-11 mx-auto p-0 mt-5 "  :style="[load_code?disabledbutton:'']">
+      <h4 class="heading font-weight-normal text-primary">Your using <b>{{post.select_language}}</b> compiler.</h4>  
       <form action="" @submit.prevent="postData()" method="post">
         <div class="sub-menu d-flex flex-row flex-wrap  mb-3">
             <div class="select">
@@ -44,7 +46,7 @@
             </div>
         
             <div class="run-code mt-4">
-              <button class="btn btn-primary " title="runs the code" type="submit"  :disabled='processing'>
+              <button class="btn btn-primary " title="Run/Execute the code" type="submit"  :disabled='processing'>
                 <b-spinner small v-if='processing'></b-spinner>
                               
                 <span class="sr-only" v-if='!processing'>Run</span>
@@ -72,7 +74,7 @@
         flex-lg-nowrap justify-content-between">
           
           <div class="code-box col-12 col-xs-12   col-sm-12 col-md-6 mb-2">
-            <div class="code-input-label"> <span>Write code here:</span></div>
+            <div class="code-input-label"> <span class="info">Write code here:</span></div>
             <div class="code-write" >
             
             <editor v-model="post.codearea" @init="editorInit" :lang="language" :theme="editor_theme" width="100%" height="100%"></editor>
@@ -83,7 +85,7 @@
           <div class="code-output-innerbx-box col-xs-12 col-12 col-sm-12 col-md-6">
               
               <div class="code-output-innerbx ">
-                  <div class="code-output-label"><span> &ThinSpace; Output:</span></div>
+                  <div class="code-output-label"><span class="info"> &ThinSpace; Output:</span></div>
                   <div class="code-output-container" title="Contains ouput after execuing code.">
                       <pre class="code-output" v-if="!program_error">{{programOutput}}</pre>
                       <div class="code-output" v-if="program_error">{{programOutput}}</div>  
@@ -102,8 +104,8 @@
     
     
       </div>
-      <div class=" col-11 mx-auto p-0 mt-5">
-          <div class="fetch-code position-absolute col-8 position-fixed" v-if="load_code">
+      <div class=" col-11 mx-auto p-0 mt-5 position-relative d-flex" :style="[load_code?disable_bg:'']">
+          <div class="fetch-code col-8 position-fixed" v-if="load_code">
         
             <b-card border-variant="primary"  class="col-12 mt-4"
               header="Do you like to continue where you leftOff"
@@ -124,9 +126,10 @@
               
               </b-card-text>
           
-        
+
             </b-card>
           </div>
+         <!-- <div  class="fetch-code-close"><span>+</span></div>  -->
       </div>
       
   </div>
@@ -161,8 +164,21 @@ export default {
       prev_selected_lang:'',
       codeFilePath:'',
       disablecntr:{
-        'background-color': 'rgba(0, 0, 0, 0.8)',
+        'background-color': 'rgba(0, 0, 0, 0.7)',
         'overflow':'hidden'
+      },
+      disable_bg:{
+        'width':'100%',
+        'height':'100%',
+        'background-color': 'rgba(0, 0, 0, 0.7)',
+        'overflow':'hidden'
+      },
+      body:{
+        'overflow':'hidden'
+      },
+      disabledbutton: {
+         'pointer-events':'none',
+          'opacity':'0.4',
       }
     }
   },
@@ -202,6 +218,10 @@ export default {
           link.download =filename;
           link.click();
           URL.revokeObjectURL(link.href);
+          this.downloading = false;
+        })
+        .catch(err=>{
+          alert(err);
           this.downloading = false;
         })
      }
@@ -382,11 +402,28 @@ export default {
 </script>
 
 <style scoped>
+  .fetch-code-close{
+    color:white;
+    font-weight:700;
+    transform: rotate(45deg);
+    position: absolute;
+    top:0;
+    right:0;
+  }
+  .fetch-code-close span{
+    font-size:70px;
+  }
   .disable{
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.6);
     /* z-index:0; */
   }
-  
+.select label{
+  /* color:#0d6efd; */
+  font-weight: 600;
+}
+.info{
+  font-weight: 600;
+}
 .select{
   margin-right:1em;
   margin-bottom:1em;
