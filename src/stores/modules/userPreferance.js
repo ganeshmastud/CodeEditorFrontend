@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/axios";
 const userPreferance = {
     state: {
         code: {
@@ -59,7 +59,7 @@ const userPreferance = {
             // return true;
         },
          async fetchCodeFiles({commit},userId){
-             await axios.get(`http://localhost:3000/user/${userId}`)
+             await axios.get(`/user/${userId}`)
               .then(res => {
                 //   console.log(res.data.codeFiles);
                   commit('updateCodeFile', res.data.codeFiles);
@@ -77,7 +77,7 @@ const userPreferance = {
         async updateLanguage({commit}, languageDetails){
             // console.log("request in updatetheme");
             const {userId,language} = languageDetails;
-            await axios.patch(`http://localhost:3000/user/${userId}/language`,
+            await axios.patch(`/user/${userId}/language`,
             {},
             {
                 params: {
@@ -95,7 +95,7 @@ const userPreferance = {
         async updateTheme({commit}, themeDetails){
             // console.log("request in updatetheme");
             const {userId,theme} = themeDetails
-            await axios.patch(`http://localhost:3000/user/${userId}`,
+            await axios.patch(`/user/${userId}`,
             {},
             {
                 params: {

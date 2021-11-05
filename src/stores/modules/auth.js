@@ -51,7 +51,7 @@ const auth = {
                             commit( 'setToken', token );
                             commit( 'setEmail', email );
                             commit('setUserID',userId)
-                            // setRequestHeader(token);
+                            setRequestHeader(token);
                             // commit( 'setRole', role );
                             // Appconfig.apiToken=token;
                             return email;

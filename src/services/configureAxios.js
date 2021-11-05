@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/axios';
 // import AppConfig from '@/config';
 // import {store} from '@/stores';
 
@@ -13,6 +13,7 @@ import axios from 'axios';
 
 // @todo Logic can be bettered to prevent hard-coding authenticated requests
 export function setRequestHeader(apiToken){
+    // console.log(apiToken);
     axios.interceptors.request.use(
         request => {
             // if( request.url.includes( 'meetings' ) || request.url.includes( 'sessions' ) ) {

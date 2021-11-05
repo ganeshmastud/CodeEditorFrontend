@@ -16,7 +16,7 @@
                         <li class="feature"> For each language, only one file can be stored and its 
                             path is stored into the Users document in DB.</li>
                         <li class="feature"> When the user changes language without executing the code. His written code is stored into vuex store.</li>
-                        <li class="feature"> After the user changes language. The popup form opens with the option to fetch the last executed code.</li>
+                        <li class="feature"> After the user changes language. The popup form opens with the option to get the last executed code.</li>
                         <li class="feature">Code Download option is available.</li>
                      </ul>
                 </div>
@@ -27,8 +27,6 @@
                     </div>
                      
                 </div>
-               
-               
                 
             </div>
             

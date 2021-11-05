@@ -3,7 +3,7 @@
     <!-- :style="[load_code?disablecntr:'']" -->
                 
       <div class=" col-11 mx-auto p-0 mt-5 "  :style="[load_code?disabledbutton:'']">
-      <h4 class="heading font-weight-normal text-primary">Your using <b>{{post.select_language}}</b> compiler.</h4>  
+      <h4 class="heading font-weight-normal text-primary">Code Editor for  <b>{{post.select_language}}</b> language is open.</h4>  
       <form action="" @submit.prevent="postData()" method="post">
         <div class="sub-menu d-flex flex-row flex-wrap  mb-3">
             <div class="select">
@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/axios";
 // import AppConfig from '@/config';
 // const { apiBaseUrl } = AppConfig;
 export default {
@@ -209,7 +209,7 @@ export default {
         let filename= this.post.select_language+'.'+extension;
        
         console.log(filename);
-         await axios.post('http://localhost:3000/downloadcode/',codeFilePath,{ responseType: "blob" })
+         await axios.post(`/downloadcode/`,codeFilePath,{ responseType: "blob" })
         .then(res =>{
           console.log(res);
           const blob =new Blob([res.data]);
@@ -282,12 +282,12 @@ export default {
       } else {
         this.load_code_from_codeFiles = false;
       }
-      if(this.getCode[this.post.select_language]) {
-        this.load_code_from_store =true;
-        this.load_code =true;
-      } else {
-        this.load_code_from_store =false;
-      }
+      // if(this.getCode[this.post.select_language]) {
+      //   this.load_code_from_store =true;
+      //   this.load_code =true;
+      // } else {
+      //   this.load_code_from_store =false;
+      // }
       // console.log(this.getCode.length); now get code is obj not array
       // console.log("change lang in fetchCodeFiles")
       
@@ -315,7 +315,7 @@ export default {
       // console.log("in loadCodeFromCodeFiles this.post.select_language ",this.post.select_language )
       let codeFilePath = {codeFilePath:this.codeFilePath,language:this.post.select_language}
       //  console.log("in loadCodeFromCodeFiles",typeof codeFilePath);
-      await axios.post('http://localhost:3000/loadcode/',codeFilePath)
+      await axios.post('/loadcode/',codeFilePath)
       .then(res =>{
         console.log(res.data)
         this.post.codearea = res.data
@@ -338,7 +338,7 @@ export default {
       // console.log(this.post.userId,"type ", typeof this.post.userId)
       // console.log("data sending data :", this.post);
       await axios
-        .post(`http://localhost:3000/codes/${this.post.select_language}`, this.post)
+        .post(`/codes/${this.post.select_language}`, this.post)
         .then((res) => {
           this.processing =false;
           this.program_error =false;

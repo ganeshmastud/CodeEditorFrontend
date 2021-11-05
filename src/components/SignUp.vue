@@ -96,7 +96,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import axios from '@/axios';
     // import AppConfig from '@/config';
     // import toast_notification from './common_utlis/toast_notification.vue'
     // const { apiBaseUrl } = AppConfig;
@@ -190,8 +190,9 @@
                     this.blank_field_err="";
                 }
             },
-             signup (){
+            async signup (){
                 // console.log("in Signup");
+                // console.log("api ",process.env.VUE_APP_API_BASE_URL);
                 this.processing=true;
                 this.username_err='';
                 this.email_err='';
@@ -209,8 +210,8 @@
                     credentials.password = this.form.password;
                     if(this.flag){
                         
-                         axios.post(
-                            `http://localhost:3000/auth/register`,
+                        await axios.post(
+                            `/auth/register`,
                             credentials,
                             {
                                 headers: {
