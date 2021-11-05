@@ -5,13 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "rimraf": "rimraf ..\\..\\CodeEditorWebApp\\codeEditorBackend\\src\\public",
+    "copyfiles":"copyfiles -u 2 ./dist/**/* ..\\..\\CodeEditorWebApp\\codeEditorBackend\\src\\public",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
     "bootstrap-vue": "^2.21.2",
+    "copyfiles": "^2.4.1",
     "core-js": "^3.6.5",
+    "rimraf": "^3.0.2",
     "vue": "^2.6.14",
     "vue-axios": "^3.3.7",
     "vue-router": "^3.5.3",
