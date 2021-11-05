@@ -25,17 +25,17 @@ const router = new Router({
         {
             name:'login',
             path:'/login',
-            component: () => import(/* webpackChunkName: "Login"*/ "@/components/Login")
+            component: () => import(/* webpackChunkName: "Login"*/ "@/components/Login.vue")
         },
         {
             name:'register',
             path:'/signup',
-            component:() => import (/*webpackChunkName: "Register"*/ "@/components/SignUp")
+            component:() => import (/*webpackChunkName: "Register"*/ "@/components/SignUp.vue")
         }
         ,{   
             name:'pageNotFound',
             path: "*",
-            component: () => import(/*webpackChunkName: "PageNotFound"*/ "@/components/PageNotFound")
+            component: () => import(/*webpackChunkName: "PageNotFound"*/ "@/components/PageNotFound.vue")
          }
        
 
