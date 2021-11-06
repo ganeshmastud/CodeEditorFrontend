@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL:'http://localhost:3000/api'
+    baseURL: 'https://code-editor-web-app.herokuapp.com/api' //'http://localhost:3000/api' //
 })

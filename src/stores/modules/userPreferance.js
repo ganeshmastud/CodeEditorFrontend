@@ -72,7 +72,7 @@ const userPreferance = {
               })
               .catch(err=>{
                 //   console.log("err in fetch theme",err);
-                 next(err);
+                 throw err;
               })
           },   
         async updateLanguage({commit}, languageDetails){
@@ -91,7 +91,7 @@ const userPreferance = {
             })
             .catch(err=>{
                 // console.log("err in fetch language",err);
-                 next(err);
+                 throw err
             })
         },
         async updateTheme({commit}, themeDetails){
@@ -110,7 +110,7 @@ const userPreferance = {
             })
             .catch(err=>{
                 // console.log("err in fetch",err);
-                next(err);
+                throw err;
             })
         }    
 
