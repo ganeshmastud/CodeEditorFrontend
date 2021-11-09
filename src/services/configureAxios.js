@@ -12,9 +12,9 @@ import axios from '@/axios';
 // console.log("Token rec frm cofig:",apiToken);
 
 // @todo Logic can be bettered to prevent hard-coding authenticated requests
-export function setRequestHeader(apiToken){
+export async function setRequestHeader(apiToken){
     // console.log(apiToken);
-    axios.interceptors.request.use(
+    await axios.interceptors.request.use(
         request => {
             // if( request.url.includes( 'meetings' ) || request.url.includes( 'sessions' ) ) {
                 // 'Bearer <token>' is just the requirement for workshops app

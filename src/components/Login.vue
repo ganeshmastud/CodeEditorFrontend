@@ -13,7 +13,7 @@
                             class="form-control"
                             name="email"
                             id="email"
-                            placeholder="ganesh.mastud@gmail.com"
+                            placeholder="Enter Email"
                             v-model="form.email"
                         /> 
                     </div>

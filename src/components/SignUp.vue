@@ -18,13 +18,13 @@
                 <!-- <hr /> -->
                 <form name="form" @submit.prevent="signup">
                     <div class="form-group pb-2">
-                        <label for="username">Name</label>
+                        <label for="username">Full Name</label>
                         <input
                             type="text"
                             class="form-control"
                             name="username"
                             id="username"
-                            placeholder="Ganesh Mastud"
+                            placeholder="Full Name"
                             v-model="form.name"
                             required
                         />
@@ -37,7 +37,7 @@
                             class="form-control"
                             name="email"
                             id="email"
-                            placeholder="ganesh.mastud@gmail.com"
+                            placeholder="Enter Email"
                             v-model="form.email"
                             required
                         />
@@ -49,7 +49,7 @@
                             type="password"
                             autocomplete="off"
                             class="form-control"
-                            placeholder="ex. Password@123"
+                            placeholder="Enter Password"
                             name="password"
                             id="password"
                             v-model="form.password"
@@ -64,6 +64,7 @@
                             autocomplete="off"
                             class="form-control"
                             name="retype_password"
+                            placeholder="Confirm Password"
                             id="retype_password"
                             v-model="form.retype_password"
                             required
@@ -174,7 +175,7 @@
                     this.flag=false;
                 }
                 if(!specialSymbol.test(password)){
-                    this.password_errs.push('Password should contains atleast 1 Special letter')
+                    this.password_errs.push('Password should contains atleast 1 Special Character')
                     this.flag=false;
                 }
                 if(this.form.password !== this.form.retype_password){
@@ -219,7 +220,7 @@
                                 }
                             }
                         )
-                        .then(()=>{
+                        .then(() => {
                             this.processing=false;
                             // console.log(res);
                             this.clearForm();
@@ -231,14 +232,14 @@
                             this.flag=false;
                             this.$router.push(  '/login' );
                         }  )
-                        .catch( (error)=>{
+                        .catch( (error) => {
                             this.clearForm();
                             // console.log(error.message);
                             alert(error.message);
                             this.flag=true;
                             this.processing=false;
                         }  );
-                    } else{
+                    } else {
                         this.processing=false;
                         this.flag=true;
                     }

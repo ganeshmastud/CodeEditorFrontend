@@ -281,6 +281,7 @@ export default {
         this.load_code = true;
       } else {
         this.load_code_from_codeFiles = false;
+         this.load_code = false;
       }
       // if(this.getCode[this.post.select_language]) {
       //   this.load_code_from_store =true;
@@ -322,6 +323,7 @@ export default {
       })
       this.load_code = false;
       this.load_code_from_codeFiles = false;
+      
     },
     async lastUnsavedCode(){
      
@@ -331,7 +333,7 @@ export default {
       // console.log("lastunsaved code:",this.post.codarea)
       this.load_code = false;
       this.load_code_from_store =false;
-      
+      this.programOutput ='';
     },
     async postData() { //making post request to store the users code in file storage and url to the file storage in database
       this.processing=true;

@@ -46,20 +46,20 @@
         name:'NavBar',
         computed: {
        
-        email() {
-            // console.log("this.$store :", this.$store.state.auth);
-            return this.$store.state.auth.email;
+            email() {
+                // console.log("this.$store :", this.$store.state.auth);
+                return this.$store.state.auth.email;
+            },
+            isAuthenticated() {
+                return this.$store.getters.isAuthenticated;
+            }
         },
-        isAuthenticated() {
-            return this.$store.getters.isAuthenticated;
+        methods: {
+            logout() {
+                this.$store.dispatch( 'logout' )
+                    .then( () => this.$router.push( { name: 'login' } ) );
+            }
         }
-    },
-    methods: {
-        logout() {
-            this.$store.dispatch( 'logout' )
-                .then( () => this.$router.push( { name: 'login' } ) );
-        }
-    }
     }
 </script>
 
