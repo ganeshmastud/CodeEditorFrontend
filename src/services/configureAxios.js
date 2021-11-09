@@ -13,7 +13,7 @@ import axios from '@/axios';
 
 // @todo Logic can be bettered to prevent hard-coding authenticated requests
 export async function setRequestHeader(apiToken){
-    // console.log(apiToken);
+    console.log(apiToken);
     await axios.interceptors.request.use(
         request => {
             // if( request.url.includes( 'meetings' ) || request.url.includes( 'sessions' ) ) {
