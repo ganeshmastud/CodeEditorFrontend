@@ -6,5 +6,5 @@ import axios from 'axios'
 // }
 
 export default axios.create({
-    baseURL: 'code-editor-for-you.eastus.cloudapp.azure.com:3000/api' // 'http://localhost:3000/api' //'https://code-editor-web-app.herokuapp.com/api' //
+    baseURL: 'http://localhost:3000/api' //'code-editor-for-you.eastus.cloudapp.azure.com:3000/api' // 'https://code-editor-web-app.herokuapp.com/api' //
 })
