@@ -16,13 +16,10 @@ export async function setRequestHeader(apiToken){
     console.log(apiToken);
     await axios.interceptors.request.use(
         request => {
-            // if( request.url.includes( 'meetings' ) || request.url.includes( 'sessions' ) ) {
-                // 'Bearer <token>' is just the requirement for workshops app
-                // In meetings app only token is sent (no 'Bearer ' prefix should be passed)
-                if( request.url.includes( 'codes' ) || request.url.includes( 'user' )){
+                console.log("in axios interceptors");
+                // if( request.url.includes( 'codes' ) || request.url.includes( 'user' )){
                     request.headers['Authorization'] = apiToken
-                }
-            // }
+                // }
 
             return request;
         },

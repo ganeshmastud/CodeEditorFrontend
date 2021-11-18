@@ -62,7 +62,7 @@ const auth = {
             localStorage.removeItem( KEY_EMAIL );
             localStorage.removeItem( KEY_USERID );
             // localStorage.removeItem( KEY_ROLE );
-        
+            setRequestHeader(auth.state.token)
             commit( 'setToken', '' );
             commit( 'setEmail', '' );
             commit('setUserID', '');
@@ -74,5 +74,5 @@ const auth = {
 
 };
 
-setRequestHeader(auth.state.token)
+// setRequestHeader(auth.state.token)
 export default auth;
